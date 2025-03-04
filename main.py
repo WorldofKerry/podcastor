@@ -1,6 +1,6 @@
 from openai import OpenAI
 import argparse
-from tika import parser
+import tika
 
 def run(api_key, content):
     client = OpenAI(
@@ -31,7 +31,7 @@ def main():
 
     args = parser.parse_args()
 
-    raw = parser.from_file(args.file)
+    raw = tika.parser.from_file(args.file)
     print(raw['content'])
 
     run(args.key, raw['content'])
