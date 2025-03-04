@@ -17,7 +17,7 @@ def run(api_key, content):
     messages=[
         {
         "role": "user",
-        "content": content + "\n convert this to a podcast style for listening to"
+        "content": content + "\n Give Me An In Depth Summary"
         }
     ]
     )
