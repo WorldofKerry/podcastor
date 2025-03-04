@@ -21,4 +21,4 @@ def run(api_key, content):
     temperature=0.0,
     )
 
-    return
+    return completion.choices[0].message.content
