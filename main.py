@@ -24,6 +24,14 @@ def run(api_key, content):
 
     print(completion.choices[0].message.content)
 
+def parse_text(path):
+    import tika
+    from tika import parser
+    parsed = parser.from_file(path)
+    print(parsed["metadata"])
+    print(parsed["content"])
+    return parsed["content"]
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-k', '--key')
@@ -31,10 +39,9 @@ def main():
 
     args = parser.parse_args()
 
-    raw = tika.parser.from_file(args.file)
-    print(raw['content'])
+    text = parse_text(args.file)
 
-    run(args.key, raw['content'])
+    run(args.key, text)
 
 if __name__ == "__main__":
     main()
