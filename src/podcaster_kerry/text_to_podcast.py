@@ -1,5 +1,13 @@
 from openai import OpenAI
 
+PROMPT_TEXT = """
+Convert this into a two-party podcast conversation, without losing nuances.
+The result should formatted as:
+H1: <things to say>
+H2: <things to say>
+where a newline delimits the contents.
+"""
+
 def run(api_key, content):
     client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
@@ -15,7 +23,7 @@ def run(api_key, content):
     messages=[
         {
         "role": "user",
-        "content": content + "\n Convert This Into A two party Podcast Conversation Without Losing Nuances, use the transcript format used in court hearings."
+        "content": content + "\n" + PROMPT_TEXT
         }
     ],
     temperature=0.0,
