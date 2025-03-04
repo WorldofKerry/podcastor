@@ -17,7 +17,7 @@ def run(api_key, content):
     messages=[
         {
         "role": "user",
-        "content": content + "\n Convert This Into A Podcast Conversation Without Losing Nuances"
+        "content": content + "\n Convert This Into A two party Podcast Conversation Without Losing Nuances, use the transcript format used in court hearings."
         }
     ],
     temperature=0.0,
