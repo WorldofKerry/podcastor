@@ -38,4 +38,4 @@ jobs:
       env:
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       run: |
-        python main.py -k "$OPENROUTER_API_KEY" -f sample.pdf
+        python src/main.py -k "$OPENROUTER_API_KEY" -f sample.pdf
