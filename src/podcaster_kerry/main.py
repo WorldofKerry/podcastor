@@ -1,30 +1,7 @@
 from openai import OpenAI
 import argparse
 import tika
-import podcaster_kerry
-
-def run(api_key, content):
-    client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=api_key,
-    )
-
-    completion = client.chat.completions.create(
-    extra_headers={
-        "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
-        "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
-    },
-    model="deepseek/deepseek-chat:free",
-    messages=[
-        {
-        "role": "user",
-        "content": content + "\n Convert This Into A two party Podcast Conversation Without Losing Nuances, use the transcript format used in court hearings."
-        }
-    ],
-    temperature=0.0,
-    )
-
-    print(completion.choices[0].message.content)
+from podcaster_kerry.text_to_podcast import run
 
 def parse_text(path):
     import tika
@@ -41,7 +18,9 @@ def main():
 
     text = parse_text(args.file)
 
-    run(args.key, text)
+    result = run(args.key, text)
+
+    print(result)
 
 if __name__ == "__main__":
     main()
