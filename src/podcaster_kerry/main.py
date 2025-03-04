@@ -1,6 +1,7 @@
 import argparse
-from podcaster_kerry.text_to_podcast import run
-from podcaster_kerry.parse_text import pdf_to_text
+from podcaster_kerry import run
+from podcaster_kerry import pdf_to_text
+from podcaster_kerry import to_audio
 
 def main():
     parser = argparse.ArgumentParser()
@@ -14,6 +15,8 @@ def main():
     result = run(args.key, text)
 
     print(result)
+
+    to_audio()
 
 if __name__ == "__main__":
     main()
