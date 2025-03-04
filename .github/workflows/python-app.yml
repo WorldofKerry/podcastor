@@ -39,4 +39,4 @@ jobs:
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       run: |
         pip install -e .
-        python src/main.py -k "$OPENROUTER_API_KEY" -f sample.pdf
+        python src/podcaster_kerry/main.py -k "$OPENROUTER_API_KEY" -f sample.pdf
