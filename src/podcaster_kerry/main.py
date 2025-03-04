@@ -1,13 +1,6 @@
-from openai import OpenAI
 import argparse
-import tika
 from podcaster_kerry.text_to_podcast import run
-
-def parse_text(path):
-    import tika
-    from tika import parser
-    parsed = parser.from_file(path)
-    return parsed["content"]
+from podcaster_kerry.parse_text import pdf_to_text
 
 def main():
     parser = argparse.ArgumentParser()
@@ -16,7 +9,7 @@ def main():
 
     args = parser.parse_args()
 
-    text = parse_text(args.file)
+    text = pdf_to_text(args.file)
 
     result = run(args.key, text)
 
