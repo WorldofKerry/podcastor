@@ -1,7 +1,7 @@
 from openai import OpenAI
 import argparse
 import tika
-from podcaster import text_to_podcast
+import podcaster
 
 def run(api_key, content):
     client = OpenAI(
