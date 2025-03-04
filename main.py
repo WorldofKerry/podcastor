@@ -13,7 +13,7 @@ def run(api_key, content):
         "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
         "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
     },
-    model="meta-llama/llama-3.2-1b-instruct:free",
+    model="deepseek/deepseek-chat:free",
     messages=[
         {
         "role": "user",
