@@ -7,6 +7,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-k', '--key')
     parser.add_argument('-f', '--file')
+    parser.add_argument('-o', '--output')
 
     args = parser.parse_args()
 
@@ -16,7 +17,7 @@ def main():
 
     print(result)
 
-    to_audio()
+    to_audio(args.output)
 
 if __name__ == "__main__":
     main()

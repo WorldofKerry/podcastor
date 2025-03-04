@@ -41,4 +41,11 @@ jobs:
       env:
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       run: |
-        python src/podcaster_kerry/main.py -k "$OPENROUTER_API_KEY" -f sample.pdf
+        python src/podcaster_kerry/main.py -k "$OPENROUTER_API_KEY" -f sample.pdf -o podcast.mp3
+    - uses: actions/upload-artifact@v4
+      with:
+        name: podcast
+        path: podcast.mp3
+        if-no-files-found: error
+        retention-days: 1
+        compression-level: 1
