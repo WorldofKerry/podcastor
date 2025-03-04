@@ -1,7 +1,4 @@
 from openai import OpenAI
-import argparse
-import tika
-from podcaster import text_to_podcast
 
 def run(api_key, content):
     client = OpenAI(
@@ -24,24 +21,4 @@ def run(api_key, content):
     temperature=0.0,
     )
 
-    print(completion.choices[0].message.content)
-
-def parse_text(path):
-    import tika
-    from tika import parser
-    parsed = parser.from_file(path)
-    return parsed["content"]
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-k', '--key')
-    parser.add_argument('-f', '--file')
-
-    args = parser.parse_args()
-
-    text = parse_text(args.file)
-
-    run(args.key, text)
-
-if __name__ == "__main__":
-    main()
+    return
