@@ -17,7 +17,7 @@ def run(api_key, content):
     messages=[
         {
         "role": "user",
-        "content": content,
+        "content": content + "\n convert this to a podcast style for listening to"
         }
     ]
     )
@@ -28,8 +28,6 @@ def parse_text(path):
     import tika
     from tika import parser
     parsed = parser.from_file(path)
-    print(parsed["metadata"])
-    print(parsed["content"])
     return parsed["content"]
 
 def main():
