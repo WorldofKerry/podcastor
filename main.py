@@ -1,7 +1,8 @@
 from openai import OpenAI
 import argparse
+from tika import parser
 
-def run(api_key):
+def run(api_key, content):
     client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
     api_key=api_key,
@@ -16,7 +17,7 @@ def run(api_key):
     messages=[
         {
         "role": "user",
-        "content": "What is the meaning of life?"
+        "content": content,
         }
     ]
     )
@@ -26,10 +27,14 @@ def run(api_key):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-k', '--key')
+    parser.add_argument('-f', '--file')
 
     args = parser.parse_args()
 
-    run(args.key)
+    raw = parser.from_file(args.file)
+    print(raw['content'])
+
+    run(args.key, raw['content'])
 
 if __name__ == "__main__":
     main()
