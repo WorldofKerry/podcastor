@@ -19,7 +19,8 @@ def run(api_key, content):
         "role": "user",
         "content": content + "\n Convert This Into A Podcast Conversation Without Losing Nuances"
         }
-    ]
+    ],
+    temperature=0.0,
     )
 
     print(completion.choices[0].message.content)
