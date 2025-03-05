@@ -41,9 +41,9 @@ jobs:
         python -m pip install -e .
     - name: Install linux dependencies
       run: |
-        sudo apt update && sudo apt install espeak ffmpeg libespeak1
+        sudo apt-get update && sudo apt-get install espeak ffmpeg libespeak1
     - name: Run application
       env:
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       run: |
-        python src/podcaster_kerry/main.py -k "$OPENROUTER_API_KEY" -i sample.pdf -o podcast.mp3
+        python src/podcaster_kerry/main.py -k "$OPENROUTER_API_KEY" -i ${{ matrix.sample }} -o podcast.mp3
