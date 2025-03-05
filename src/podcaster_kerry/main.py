@@ -5,9 +5,9 @@ from podcaster_kerry import to_audio
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-k', '--key')
-    parser.add_argument('-f', '--file')
-    parser.add_argument('-o', '--output')
+    parser.add_argument('-k', '--key', help="OPENROUTER_API_KEY")
+    parser.add_argument('-f', '--file', help="path to input pdf file")
+    parser.add_argument('-o', '--output', help="path to output audio file")
 
     args = parser.parse_args()
 
