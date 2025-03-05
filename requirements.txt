@@ -1,3 +1,4 @@
 openai
 tika
 pyttsx3
+pytest
