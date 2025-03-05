@@ -1,5 +1,6 @@
 import requests
 import datetime
+import json
 
 def upload(file_path):
     url = "https://worldofkerry-server.vercel.app/upload"
@@ -12,7 +13,8 @@ def upload(file_path):
     print(response.status_code)
     print(response.text)
     try:
-        file_id = response.text["file_id"]
+        response = json.loads(response.text)
+        file_id = response["file_id"]
         print(file_id)
         print(f"https://worldofkerry-server.vercel.app/download?file_id={file_id}")
     except Exception as e:
