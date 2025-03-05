@@ -14,9 +14,10 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        sample: ['sample.pdf', 'short.pdf']
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python 3.10
