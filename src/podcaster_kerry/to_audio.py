@@ -1,8 +1,12 @@
-from pyt2s.services import stream_elements
+import pyttsx3
 
 def to_audio(content, path):
-    # Custom Voice
-    data = stream_elements.requestTTS(content, stream_elements.Voice.Russell.value)
+    engine = pyttsx3.init()
+    voices = engine.getProperty('voices')
+    for voice in voices:
+        engine.setProperty('voice', voice.id)
+        engine.say('The quick brown fox jumped over the lazy dog.')
 
-    with open(path, '+wb') as file:
-        file.write(data)
+    engine.runAndWait()
+
+    engine.save_to_file(content , path)
