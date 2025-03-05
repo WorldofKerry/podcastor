@@ -2,3 +2,4 @@ openai
 tika
 gTTS
 pytest
+pyttsx3
