@@ -16,8 +16,8 @@ def main():
 
     print(result)
 
-    to_audio(args.output)
-    
+    to_audio(result, args.output)
+
     upload(args.output)
 
 if __name__ == "__main__":
