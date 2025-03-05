@@ -1,4 +1,4 @@
 openai
 tika
-pyttsx3
+gTTS
 pytest
