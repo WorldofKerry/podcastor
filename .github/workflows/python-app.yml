@@ -18,6 +18,7 @@ jobs:
     strategy:
       matrix:
         sample: ['sample.pdf', 'short.pdf']
+      fail-fast: false
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python 3.10
