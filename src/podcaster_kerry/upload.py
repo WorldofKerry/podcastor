@@ -11,3 +11,9 @@ def upload(file_path):
 
     print(response.status_code)
     print(response.text)
+    try:
+        file_id = response.text["file_id"]
+        print(file_id)
+        print(f"https://worldofkerry-server.vercel.app/download?file_id={file_id}")
+    except Exception as e:
+        print(e)
