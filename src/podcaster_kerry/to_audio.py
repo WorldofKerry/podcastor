@@ -32,9 +32,6 @@ def parse_text(content: str) -> list[tuple[str, str]]:
     return [(speaker, dialogue.strip()) for speaker, dialogue in matches]
 
 def to_audio(content, path):
-    result = create_piper_json(content)
-    json_str = "\n".join(json.dumps(r) for r in result)
-    print(json_str)
     # FUTURE: https://stackoverflow.com/questions/37600197/custom-python-gtts-voice
     # Use localizations / accents to distinguish between different speakers
     tts = gTTS(content)
