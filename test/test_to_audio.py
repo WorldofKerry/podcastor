@@ -38,5 +38,3 @@ def test_to_audio():
 
     # Disconnect the TTS engine
     engine.stop()
-
-    assert False    
