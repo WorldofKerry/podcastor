@@ -8,7 +8,7 @@ def create_piper_json(content: str) -> list[dict]:
     """
     ret = []
     parsed = parse_text(content)
-    speaker_mapping: dict[str, int]
+    speaker_mapping: dict[str, int] = {}
     id_counter = 0
 
     for speaker, content in parsed:
