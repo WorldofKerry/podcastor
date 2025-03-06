@@ -45,3 +45,8 @@ jobs:
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       run: |
         python src/podcaster_kerry/main.py -k "$OPENROUTER_API_KEY" -i ${{ matrix.sample }} -o podcast.mp3
+    - name: Test piper
+      run: |
+        echo 'Welcome to the world of speech synthesis!' | piper \
+        --model en_US-lessac-medium \
+        --output_file welcome.wav

@@ -3,3 +3,4 @@ tika
 gTTS
 pytest
 pyttsx3
+piper-tts
