@@ -2,8 +2,11 @@ from dataclasses import dataclass
 from pathlib import Path
 import subprocess
 import wave
-from gtts import gTTS
 import re
+from pydub import AudioSegment
+
+SEGMENTS_DIR = "segments"
+WAVE_FILE = "combined.wav"
 
 # American english voices with > 1 speaker. https://github.com/rhasspy/piper/blob/9b1c6397698b1da11ad6cca2b318026b628328ec/src/python_run/piper/voices.json#L4
 KEY_TO_NUM_SPEAKERS = {"en_US-libritts-high": 904, "en_US-arctic-medium": 18, "en_US-l2arctic-medium": 24}
@@ -43,7 +46,10 @@ def _make_entries(content: str) -> list[Entry]:
         ret.append(Entry(speaker_id, content))
     return ret
 
-def get_audio(content: str, segments_dir: Path, output: Path):
+def get_audio(content: str, working_dir: Path, output: Path):
+    segments_dir = working_dir / SEGMENTS_DIR
+
+    working_dir.mkdir(parents=True, exist_ok=True)
     segments_dir.mkdir(parents=True, exist_ok=True)
 
     results = _make_entries(content)
@@ -58,18 +64,19 @@ def get_audio(content: str, segments_dir: Path, output: Path):
         command = ["piper",
                 "--model", model,
                 "--speaker", str(entry.speaker_id),
-                "--output-file", str(segments_dir / f"audio_{i}.wav"),
+                "--output-file", str(segments_dir / f"{i}.wav"),
                 "--update-voices",
                 *parameters.as_args(),
                 ]
         _ = subprocess.check_output(command, input=entry.text.encode())
-    _combine_audio(segments_dir, output)
+    _combine_audio(segments_dir, working_dir / WAVE_FILE)
+    _convert_to_mp3(working_dir / WAVE_FILE, output)
 
-def _combine_audio(dir: Path, output: Path):
-    infiles = list(dir.glob("*.wav"))
+def _combine_audio(segments: Path, output: Path):
+    infiles = list(segments.glob("*.wav"))
     infiles.sort()
     if not infiles:
-        raise ValueError(f"No audio files found in {dir}")
+        raise ValueError(f"No audio files found in {segments}")
     data = []
     for infile in infiles:
         with wave.open(str(infile), "rb") as w:
@@ -78,6 +85,9 @@ def _combine_audio(dir: Path, output: Path):
         w.setparams(data[0][0])
         for i in range(len(data)):
             w.writeframes(data[i][1])
+
+def _convert_to_mp3(wave_file: Path, mp3_file: Path):
+    AudioSegment.from_wav(str(wave_file)).export(str(mp3_file), format="mp3")
 
 def _parse_text(content: str) -> list[tuple[str, str]]:
     """
@@ -97,9 +107,3 @@ def _parse_text(content: str) -> list[tuple[str, str]]:
     print(content)
     matches = re.findall(pattern, content, re.MULTILINE)
     return [(speaker, dialogue.strip()) for speaker, dialogue in matches]
-
-def to_audio(content, path):
-    # FUTURE: https://stackoverflow.com/questions/37600197/custom-python-gtts-voice
-    # Use localizations / accents to distinguish between different speakers
-    tts = gTTS(content)
-    tts.save(path)
