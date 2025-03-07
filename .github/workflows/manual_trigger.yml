@@ -46,5 +46,6 @@ jobs:
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         INPUT_PATH: ${{ inputs.path }}
       run: |
+        echo "$INPUT_PATH"
         python src/podcaster_kerry/main.py -k "$OPENROUTER_API_KEY" -i "$INPUT_PATH" -o podcast.mp3
     

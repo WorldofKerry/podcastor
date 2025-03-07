@@ -64,7 +64,7 @@ def get_audio(content: str, working_dir: Path, output: Path):
         command = ["piper",
                 "--model", model,
                 "--speaker", str(entry.speaker_id),
-                "--output-file", str(segments_dir / f"{i}.wav"),
+                "--output-dir", str(segments_dir),
                 "--update-voices",
                 *parameters.as_args(),
                 ]
