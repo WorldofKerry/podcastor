@@ -104,6 +104,5 @@ def _parse_text(content: str) -> list[tuple[str, str]]:
     """
     content = content.strip() + "\n" # Ensure single newline at end
     pattern = r"(H\d):\s*(.*?)(?:\n(?=H\d:)|$)"
-    print(content)
     matches = re.findall(pattern, content, re.MULTILINE)
     return [(speaker, dialogue.strip()) for speaker, dialogue in matches]
