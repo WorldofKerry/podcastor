@@ -5,7 +5,7 @@ from podcaster_kerry.to_audio import get_audio
 from . import SAMPLE
 import pytest
 
-# @pytest.mark.skipif(not os.getenv("GITHUB_ACTIONS"), reason="Only run on GitHub Actions")
+@pytest.mark.skipif(not os.getenv("GITHUB_ACTIONS"), reason="Only run on GitHub Actions")
 def test_create_piper_json():
     temp_dir = Path("./outputs/")
     shutil.rmtree(temp_dir, ignore_errors=True)
