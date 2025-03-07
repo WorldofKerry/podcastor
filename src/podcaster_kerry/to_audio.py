@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 import subprocess
+import wave
 from gtts import gTTS
 import re
 
@@ -30,7 +31,7 @@ class PiperParameters:
 
 def _make_entries(content: str) -> list[Entry]:
     ret = []
-    parsed = parse_text(content)
+    parsed = _parse_text(content)
     speaker_mapping: dict[str, int] = {}
     id_counter = 0
 
@@ -53,7 +54,7 @@ def get_audio(content: str, dir: Path):
         if entry.speaker_id > num_speakers:
             print(f"Speaker ID {entry.speaker_id} is out of range for model {model}, modifiying to {entry.speaker_id % num_speakers}")
             entry.speaker_id = entry.speaker_id % num_speakers
-        parameters = PiperParameters()
+        parameters = PiperParameters(length_scale=0.85)
         command = ["piper",
                 "--model", model,
                 "--speaker", str(entry.speaker_id),
@@ -61,9 +62,31 @@ def get_audio(content: str, dir: Path):
                 *parameters.as_args(),
                 ]
         _ = subprocess.check_output(command, input=entry.text.encode())
+    combine_audio(dir, dir / "combined.wav")
 
-def parse_text(content: str) -> list[tuple[str, str]]:
+def combine_audio(dir: Path, output: Path):
+    infiles = list(dir.glob("*.wav"))
+    infiles.sort()
+    if not infiles:
+        raise ValueError(f"No audio files found in {dir}")
+    data = []
+    for infile in infiles:
+        with wave.open(str(infile), "rb") as w:
+            data.append([w.getparams(), w.readframes(w.getnframes())])
+    with wave.open(str(output), "wb") as w:
+        w.setparams(data[0][0])
+        for i in range(len(data)):
+            w.writeframes(data[i][1])
+
+def _parse_text(content: str) -> list[tuple[str, str]]:
     """
+    Inputs:
+    content in the format
+    H1: blah blah blah
+    H2: blah blah blah
+    ...
+    
+    Returns:
     ret[i] represents the i-th dialogue
     ret[i][0] is the speaker name
     ret[i][1] is the speaker content

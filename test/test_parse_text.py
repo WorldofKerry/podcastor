@@ -1,8 +1,8 @@
-from podcaster_kerry.to_audio import parse_text
+from podcaster_kerry.to_audio import _parse_text
 from . import SAMPLE
 
 def test_parse_text():
-    result = parse_text(SAMPLE)
+    result = _parse_text(SAMPLE)
     print("NANI")
     print(len(result))
     print(result)
