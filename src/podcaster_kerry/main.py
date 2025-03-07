@@ -5,15 +5,15 @@ from podcaster_kerry import text_to_podcast, pdf_to_text, get_audio, upload
 
 def run(input: Path, output: Path, key: str, working_dir: Path):
     if working_dir.exists():
-        print(f"Woring dir {working_dir} already exists")
+        print(f"Working dir {working_dir} already exists")
         return
     
     try:
-        text = pdf_to_text(input)
-        print(f"{text=}")
-        result = text_to_podcast(key, text)
-        print(f"{result=}")
-        get_audio(result, working_dir, output)
+        raw_text = pdf_to_text(input)
+        print(f"{raw_text=}")
+        podcast_text = text_to_podcast(key, raw_text)
+        print(f"{podcast_text=}")
+        get_audio(podcast_text, working_dir, output)
         upload(output)
     except Exception:
         print(f"Error: {traceback.format_exc()}")
