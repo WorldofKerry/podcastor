@@ -9,10 +9,10 @@ def upload(file_path):
         files = {"file": file}
         data = {"file_id": file_id}
         response = requests.post(url, files=files, data=data)
-    print(response.text.strip())
+    print(f"Upload response: {response.text.strip()}")
     try:
         response = json.loads(response.text)
         file_id = response["file_id"]
         print(f"https://worldofkerry-server.vercel.app/download?file_id={file_id}")
     except Exception as e:
-        print(e)
+        print(f"Error with uploading: {e}")
