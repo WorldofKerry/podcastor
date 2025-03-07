@@ -4,11 +4,13 @@
 name: Run on PDF
 
 on:
+  push:
   workflow_dispatch:
     inputs:
       path:
         description: 'Relative path to PDF file'
-        required: true        
+        required: true
+        default: 'sample.pdf'
 
 permissions:
   contents: read
