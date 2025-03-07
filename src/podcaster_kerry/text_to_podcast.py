@@ -8,17 +8,13 @@ H2: <things to say>
 where a newline delimits the contents.
 """
 
-def run(api_key, content):
+def text_to_podcast(api_key, content):
     client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
     api_key=api_key,
     )
 
     completion = client.chat.completions.create(
-    extra_headers={
-        "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
-        "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
-    },
     model="deepseek/deepseek-chat:free",
     messages=[
         {
