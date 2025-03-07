@@ -11,13 +11,13 @@ def run(input: Path, output: Path, key: str, working_dir: Path):
     if working_dir.exists():
         print(f"Working dir {working_dir} already exists")
         return
+    working_dir.mkdir(parents=True, exist_ok=True)
     
     try:
         raw_text = pdf_to_text(input)
-        print(f"{raw_text=}")
         write_to_file(raw_text, working_dir / "raw.txt")
         podcast_text = text_to_podcast(key, raw_text)
-        print(f"{podcast_text=}")
+        write_to_file(podcast_text, working_dir / "podcast.txt")
         get_audio(podcast_text, working_dir, output)
         upload(output)
     except Exception:
