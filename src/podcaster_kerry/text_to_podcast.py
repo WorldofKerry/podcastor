@@ -24,5 +24,5 @@ def text_to_podcast(api_key, content):
     ],
     temperature=0.0,
     )
-    print(f"{completion=}"
+    print(f"{completion=}")
     return completion.choices[0].message.content
