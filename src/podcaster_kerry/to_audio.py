@@ -43,8 +43,8 @@ def _make_entries(content: str) -> list[Entry]:
         ret.append(Entry(speaker_id, content))
     return ret
 
-def get_audio(content: str, dir: Path):
-    dir.mkdir(parents=True, exist_ok=True)
+def get_audio(content: str, segments_dir: Path, output: Path):
+    segments_dir.mkdir(parents=True, exist_ok=True)
 
     results = _make_entries(content)
     model = "en_US-arctic-medium"
@@ -58,11 +58,11 @@ def get_audio(content: str, dir: Path):
         command = ["piper",
                 "--model", model,
                 "--speaker", str(entry.speaker_id),
-                "--output-file", str(dir / f"audio_{i}.wav"),
+                "--output-file", str(segments_dir / f"audio_{i}.wav"),
                 *parameters.as_args(),
                 ]
         _ = subprocess.check_output(command, input=entry.text.encode())
-    combine_audio(dir, dir / "combined.wav")
+    combine_audio(segments_dir, output)
 
 def combine_audio(dir: Path, output: Path):
     infiles = list(dir.glob("*.wav"))
