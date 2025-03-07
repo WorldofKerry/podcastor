@@ -63,3 +63,6 @@ jobs:
         echo "$INPUT_PATH"
         python src/podcaster_kerry/main.py -k "$OPENROUTER_API_KEY" -i "$INPUT_PATH" -o podcast.mp3
     
+    - name: Upload result
+      run: |
+        curl -X POST https://worldofkerry-server.vercel.app/upload -F "file=@podcast.mp3"
