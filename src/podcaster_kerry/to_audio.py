@@ -59,12 +59,13 @@ def get_audio(content: str, segments_dir: Path, output: Path):
                 "--model", model,
                 "--speaker", str(entry.speaker_id),
                 "--output-file", str(segments_dir / f"audio_{i}.wav"),
+                "--update-voices",
                 *parameters.as_args(),
                 ]
         _ = subprocess.check_output(command, input=entry.text.encode())
-    combine_audio(segments_dir, output)
+    _combine_audio(segments_dir, output)
 
-def combine_audio(dir: Path, output: Path):
+def _combine_audio(dir: Path, output: Path):
     infiles = list(dir.glob("*.wav"))
     infiles.sort()
     if not infiles:
