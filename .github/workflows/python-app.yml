@@ -45,4 +45,8 @@ jobs:
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       run: |
         python src/podcaster_kerry/main.py -k "$OPENROUTER_API_KEY" -i ${{ matrix.sample }} -o podcast.mp3
-    
+    - name: Upload working directory artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.sample }}
+        path: ./output/
