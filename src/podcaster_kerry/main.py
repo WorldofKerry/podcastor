@@ -16,8 +16,9 @@ def run(input: Path, output: Path, key: str, working_dir: Path):
     try:
         raw_text = pdf_to_text(input)
         write_to_file(raw_text, working_dir / "raw.txt")
-        podcast_text = text_to_podcast(key, raw_text)
+        podcast_text, response = text_to_podcast(key, raw_text)
         write_to_file(podcast_text, working_dir / "podcast.txt")
+        write_to_file(str(response), working_dir / "response.txt")
         get_audio(podcast_text, working_dir, output)
         upload(output)
     except Exception:
@@ -28,7 +29,7 @@ def main():
     parser.add_argument('-k', '--key', help="OPENROUTER_API_KEY", required=True)
     parser.add_argument('-i', '--input', help="path to input pdf file", required=True)
     parser.add_argument('-o', '--output', help="path to output mp3 file", required=True)
-    parser.add_argument('-c', '--working_dir', help="working dir", default="./outputs/")
+    parser.add_argument('-c', '--working_dir', help="working dir", default="./output/")
     args = parser.parse_args()
     run(Path(args.input), Path(args.output), args.key, Path(args.working_dir))
 
