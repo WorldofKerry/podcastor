@@ -9,7 +9,10 @@ on:
       path:
         description: 'Relative path to PDF file'
         required: true
-        default: 'sample.pdf'
+        default: 'download.pdf'
+      url:
+        description: 'PDF url'
+        required: true
 
 permissions:
   contents: read
@@ -37,8 +40,11 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     
     - name: Download PDF
+      env:
+        INPUT_PATH: ${{ inputs.path }}
+        URL: ${{ inputs.url }}
       run: |
-        wget https://arxiv.org/pdf/2205.14135 -O download.pdf
+        wget $URL -O $INPUT_PATH
         ls -la
 
     - name: Install package
