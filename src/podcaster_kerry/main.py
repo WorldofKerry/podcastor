@@ -7,8 +7,9 @@ from podcaster_kerry import run, pdf_to_text, get_audio, upload
 def everything(input: Path, output: Path, key: str, working_dir: Path = None):
     try:
         text = pdf_to_text(input)
+        print(f"{text=}")
         result = run(key, text)
-        print(result)
+        print(f"{result=}")
         get_audio(result, working_dir, output)
         upload(output)
     except Exception:
