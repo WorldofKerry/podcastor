@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from pathlib import Path
 import subprocess
 from gtts import gTTS
 import re
@@ -28,10 +29,6 @@ class PiperParameters:
         ]
 
 def _make_entries(content: str) -> list[Entry]:
-    """
-    Return: follows format specified here: https://github.com/rhasspy/piper?tab=readme-ov-file#json-input
-    { "text": "First speaker.", "speaker_id": 0, "output_file": "/tmp/speaker_0.wav" }
-    """
     ret = []
     parsed = parse_text(content)
     speaker_mapping: dict[str, int] = {}
@@ -45,7 +42,9 @@ def _make_entries(content: str) -> list[Entry]:
         ret.append(Entry(speaker_id, content))
     return ret
 
-def get_audio(content: str):
+def get_audio(content: str, dir: Path):
+    dir.mkdir(parents=True, exist_ok=True)
+
     results = _make_entries(content)
     model = "en_US-arctic-medium"
     num_speakers = KEY_TO_NUM_SPEAKERS[model]
@@ -58,7 +57,7 @@ def get_audio(content: str):
         command = ["piper",
                 "--model", model,
                 "--speaker", str(entry.speaker_id),
-                "--output-file", f"outputs/output_{i}.wav",
+                "--output-file", str(dir / f"audio_{i}.wav"),
                 *parameters.as_args(),
                 ]
         _ = subprocess.check_output(command, input=entry.text.encode())
