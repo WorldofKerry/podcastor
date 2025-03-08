@@ -5,7 +5,6 @@ name: Run on PDF
 
 on:
   push:
-  pull_request:
   workflow_dispatch:
     inputs:
       url:
