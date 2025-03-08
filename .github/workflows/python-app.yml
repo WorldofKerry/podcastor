@@ -43,7 +43,7 @@ jobs:
     # - name: Install linux dependencies
     #   uses: awalsh128/cache-apt-pkgs-action@latest
     #   with:
-    #     packages: speak ffmpeg libespeak1
+    #     packages: ffmpeg
     #     version: 1.0
 
     - name: Install linux dependencies
