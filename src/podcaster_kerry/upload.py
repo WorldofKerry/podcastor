@@ -4,7 +4,7 @@ import json
 
 def upload(file_path):
     url = "https://worldofkerry-server.vercel.app/upload"
-    file_id = "podcast_audio_" + str(int(time.time()))
+    file_id = "podcast_audio_" + str(int(time.time_ns()))
     with open(file_path, "rb") as file:
         files = {"file": file}
         data = {"file_id": file_id}
