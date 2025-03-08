@@ -5,9 +5,9 @@ from podcaster_kerry.audio import Engine, dialogue_to_mp3
 from . import SAMPLE
 import pytest
 
-@pytest.mark.skipif(not os.getenv("GITHUB_ACTIONS"), reason="Only run on GitHub Actions")
+# @pytest.mark.skipif(not os.getenv("GITHUB_ACTIONS"), reason="Only run on GitHub Actions")
 def test_create_piper_json():
-    temp_dir = Path("./outputs/")
+    temp_dir = Path("./outputs_piper/")
     shutil.rmtree(temp_dir, ignore_errors=True)
     assert not temp_dir.exists()
 
@@ -23,7 +23,7 @@ def test_create_piper_json():
 
 # @pytest.mark.skipif(not os.getenv("GITHUB_ACTIONS"), reason="Only run on GitHub Actions")
 def test_coqui_ai():
-    temp_dir = Path("./outputs/")
+    temp_dir = Path("./outputs_coqui/")
     shutil.rmtree(temp_dir, ignore_errors=True)
     assert not temp_dir.exists()
 

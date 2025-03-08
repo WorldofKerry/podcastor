@@ -76,7 +76,7 @@ def _dialogue_to_mp3_piper(entries: list[Entry], segments_dir: Path):
     model = "en_US-arctic-medium"
     num_speakers = KEY_TO_NUM_SPEAKERS[model]
 
-    for entry in enumerate(entries):
+    for entry in entries:
         if entry.speaker_id > num_speakers:
             print(f"Speaker ID {entry.speaker_id} is out of range for model {model}, modifiying to {entry.speaker_id % num_speakers}")
             entry.speaker_id = entry.speaker_id % num_speakers
@@ -93,11 +93,10 @@ def _dialogue_to_mp3_piper(entries: list[Entry], segments_dir: Path):
 def _dialogue_to_mp3_coqui(entries: list[Entry], segments_dir: Path):
     device = "cuda" if torch.cuda.is_available() else "cpu"
     tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
-    print(repr(tts.speakers))
+    SPEAKERS = [(0, 'Claribel Dervla'), (1, 'Daisy Studious'), (2, 'Gracie Wise'), (3, 'Tammie Ema'), (4, 'Alison Dietlinde'), (5, 'Ana Florence'), (6, 'Annmarie Nele'), (7, 'Asya Anara'), (8, 'Brenda Stern'), (9, 'Gitta Nikolina'), (10, 'Henriette Usha'), (11, 'Sofia Hellen'), (12, 'Tammy Grit'), (13, 'Tanja Adelina'), (14, 'Vjollca Johnnie'), (15, 'Andrew Chipper'), (16, 'Badr Odhiambo'), (17, 'Dionisio Schuyler'), (18, 'Royston Min'), (19, 'Viktor Eka'), (20, 'Abrahan Mack'), (21, 'Adde Michal'), (22, 'Baldur Sanjin'), (23, 'Craig Gutsy'), (24, 'Damien Black'), (25, 'Gilberto Mathias'), (26, 'Ilkin Urbano'), (27, 'Kazuhiko Atallah'), (28, 'Ludvig Milivoj'), (29, 'Suad Qasim'), (30, 'Torcull Diarmuid'), (31, 'Viktor Menelaos'), (32, 'Zacharie Aimilios'), (33, 'Nova Hogarth'), (34, 'Maja Ruoho'), (35, 'Uta Obando'), (36, 'Lidiya Szekeres'), (37, 'Chandra MacFarland'), (38, 'Szofi Granger'), (39, 'Camilla Holmström'), (40, 'Lilya Stainthorpe'), (41, 'Zofija Kendrick'), (42, 'Narelle Moon'), (43, 'Barbora MacLean'), (44, 'Alexandra Hisakawa'), (45, 'Alma María'), (46, 'Rosemary Okafor'), (47, 'Ige Behringer'), (48, 'Filip Traverse'), (49, 'Damjan Chapman'), (50, 'Wulf Carlevaro'), (51, 'Aaron Dreschner'), (52, 'Kumar Dahl'), (53, 'Eugenio Mataracı'), (54, 'Ferran Simen'), (55, 'Xavier Hayasaka'), (56, 'Luis Moray'), (57, 'Marcos Rudaski')]
     for i, entry in enumerate(entries):
-        if entry.speaker_id > len(tts.speakers):
-            print(f"Speaker ID {entry.speaker_id} is out of range for model, modifiying to {entry.speaker_id % len(tts.speakers)}")
-            entry.speaker_id = entry.speaker_id % len(tts.speakers)
+        entry.speaker_id += 23 # Dislike first speakers
+        entry.speaker_id = entry.speaker_id % len(tts.speakers)
         tts.tts_to_file(
             text=entry.text,
             speaker=tts.speakers[entry.speaker_id],
