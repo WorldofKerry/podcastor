@@ -12,17 +12,13 @@ def run(input: Path, output: Path, key: str, working_dir: Path):
         print(f"Working dir {working_dir} already exists")
         return
     working_dir.mkdir(parents=True, exist_ok=True)
-    
-    try:
-        raw_text = pdf_to_text(input)
-        write_to_file(raw_text, working_dir / "raw.txt")
-        podcast_text, response = text_to_podcast(key, raw_text)
-        write_to_file(podcast_text, working_dir / "podcast.txt")
-        write_to_file(str(response), working_dir / "response.txt")
-        get_audio(podcast_text, working_dir, output)
-        upload(output)
-    except Exception:
-        print(f"Error: {traceback.format_exc()}")
+    raw_text = pdf_to_text(input)
+    write_to_file(raw_text, working_dir / "raw.txt")
+    podcast_text, response = text_to_podcast(key, raw_text)
+    write_to_file(podcast_text, working_dir / "podcast.txt")
+    write_to_file(str(response), working_dir / "response.txt")
+    get_audio(podcast_text, working_dir, output)
+    upload(output)
 
 def main():
     parser = argparse.ArgumentParser()
