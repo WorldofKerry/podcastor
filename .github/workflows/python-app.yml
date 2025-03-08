@@ -19,38 +19,41 @@ jobs:
       fail-fast: false
     steps:
     - uses: actions/checkout@v4
+    
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
         python-version: "3.10"
+    
     - uses: actions/cache@v4
-      id: pip_cache
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
                         ${{ runner.os }}-pip-
+    
     - name: Install dependencies
-      # if: steps.pip_cache.outputs.cache-hit != 'true'
       run: |
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    
     - name: Install package
       run: |
         python -m pip install -e .
+    
     - name: Install linux dependencies
       uses: awalsh128/cache-apt-pkgs-action@latest
       with:
         packages: speak ffmpeg libespeak1
         version: 1.0
-    # - name: Old Install linux dependencies
-    #   run: |
-    #     sudo apt-get update && sudo apt-get install espeak ffmpeg libespeak1
+    
     - name: Run application
       env:
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       run: |
         python src/podcaster_kerry/main.py -k "$OPENROUTER_API_KEY" -i ${{ matrix.sample }} -o podcast.mp3
+    
     - name: Upload working directory artifact
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.sample }}
