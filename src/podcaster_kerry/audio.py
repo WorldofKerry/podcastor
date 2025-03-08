@@ -1,9 +1,12 @@
 from dataclasses import dataclass
+from enum import Enum
 from pathlib import Path
 import subprocess
 import wave
 import re
 from pydub import AudioSegment
+import torch
+from TTS.api import TTS
 
 SEGMENTS_DIR = "segments"
 WAVE_FILE = "combined.wav"
@@ -15,6 +18,10 @@ KEY_TO_NUM_SPEAKERS = {"en_US-libritts-high": 904, "en_US-arctic-medium": 18, "e
 class Entry:
     speaker_id: int
     text: str
+
+class Engine(Enum):
+    PIPER = "piper"
+    COQUI = "coqui"
 
 # Default values from https://github.com/rhasspy/piper/blob/master/src/cpp/piper.hpp
 @dataclass
@@ -46,17 +53,30 @@ def _dialogue_as_entries(content: str) -> list[Entry]:
         ret.append(Entry(speaker_id, content))
     return ret
 
-def dialogue_to_mp3(content: str, working_dir: Path, output: Path):
+def dialogue_to_mp3(content: str, working_dir: Path, output: Path, engine: Engine = Engine.PIPER):
     segments_dir = working_dir / SEGMENTS_DIR
 
     working_dir.mkdir(parents=True, exist_ok=True)
     segments_dir.mkdir(parents=True, exist_ok=True)
 
     results = _dialogue_as_entries(content)
+
+    match engine:
+        case Engine.COQUI:
+            _dialogue_to_mp3_coqui(results, segments_dir)
+        case Engine.PIPER:
+            _dialogue_to_mp3_piper(results, segments_dir)
+        case _:
+            raise ValueError(f"Unsupported engine {engine}")     
+    
+    _combine_wav_files(segments_dir, working_dir / WAVE_FILE)
+    _wav_to_mp3(working_dir / WAVE_FILE, output)
+
+def _dialogue_to_mp3_piper(entries: list[Entry], segments_dir: Path):
     model = "en_US-arctic-medium"
     num_speakers = KEY_TO_NUM_SPEAKERS[model]
 
-    for i, entry in enumerate(results):
+    for entry in enumerate(entries):
         if entry.speaker_id > num_speakers:
             print(f"Speaker ID {entry.speaker_id} is out of range for model {model}, modifiying to {entry.speaker_id % num_speakers}")
             entry.speaker_id = entry.speaker_id % num_speakers
@@ -69,8 +89,21 @@ def dialogue_to_mp3(content: str, working_dir: Path, output: Path):
                 *parameters.as_args(),
                 ]
         _ = subprocess.check_output(command, input=entry.text.encode())
-    _combine_wav_files(segments_dir, working_dir / WAVE_FILE)
-    _wav_to_mp3(working_dir / WAVE_FILE, output)
+
+def _dialogue_to_mp3_coqui(entries: list[Entry], segments_dir: Path):
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
+    print(repr(tts.speakers))
+    for i, entry in enumerate(entries):
+        if entry.speaker_id > len(tts.speakers):
+            print(f"Speaker ID {entry.speaker_id} is out of range for model, modifiying to {entry.speaker_id % len(tts.speakers)}")
+            entry.speaker_id = entry.speaker_id % len(tts.speakers)
+        tts.tts_to_file(
+            text=entry.text,
+            speaker=tts.speakers[entry.speaker_id],
+            language="en",
+            file_path=segments_dir / f"{i}.wav",
+        )
 
 def _combine_wav_files(segments: Path, output: Path):
     infiles = list(segments.glob("*.wav"))
