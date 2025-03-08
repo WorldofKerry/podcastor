@@ -53,7 +53,7 @@ def _dialogue_as_entries(content: str) -> list[Entry]:
         ret.append(Entry(speaker_id, content))
     return ret
 
-def dialogue_to_mp3(content: str, working_dir: Path, output: Path, engine: Engine = Engine.PIPER):
+def dialogue_to_mp3(content: str, working_dir: Path, output: Path, engine: Engine = Engine.COQUI):
     segments_dir = working_dir / SEGMENTS_DIR
 
     working_dir.mkdir(parents=True, exist_ok=True)
