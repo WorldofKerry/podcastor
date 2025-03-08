@@ -40,12 +40,16 @@ jobs:
       run: |
         python -m pip install -e .
     
+    # - name: Install linux dependencies
+    #   uses: awalsh128/cache-apt-pkgs-action@latest
+    #   with:
+    #     packages: speak ffmpeg libespeak1
+    #     version: 1.0
+
     - name: Install linux dependencies
-      uses: awalsh128/cache-apt-pkgs-action@latest
-      with:
-        packages: speak ffmpeg libespeak1
-        version: 1.0
-    
+      run: |
+        sudo apt-get update && sudo apt-get install ffmpeg
+
     - name: Run application
       env:
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
