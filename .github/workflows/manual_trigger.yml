@@ -5,14 +5,9 @@ name: Run on PDF
 
 on:
   workflow_dispatch:
-    inputs:
-      path:
-        description: 'Relative path to PDF file'
-        required: true
-        default: 'download.pdf'
-      url:
-        description: 'PDF url'
-        required: true
+    url:
+      description: 'PDF url'
+      required: true
 
 permissions:
   contents: read
@@ -41,11 +36,9 @@ jobs:
     
     - name: Download PDF
       env:
-        INPUT_PATH: ${{ inputs.path }}
         URL: ${{ inputs.url }}
       run: |
-        wget $URL -O $INPUT_PATH
-        ls -la
+        wget $URL -O download.pdf
 
     - name: Install package
       run: |
@@ -58,10 +51,8 @@ jobs:
     - name: Run application
       env:
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-        INPUT_PATH: ${{ inputs.path }}
       run: |
-        echo "$INPUT_PATH"
-        python src/podcaster_kerry/main.py -k "$OPENROUTER_API_KEY" -i "$INPUT_PATH" -o podcast.mp3
+        python src/podcaster_kerry/main.py -k "$OPENROUTER_API_KEY" -i download.pdf -o podcast.mp3
     
     - name: Upload result
       run: |
