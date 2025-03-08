@@ -1,8 +1,8 @@
-from podcaster_kerry.to_audio import _parse_text
+from podcaster_kerry.audio import _dialogue_as_list
 from . import SAMPLE
 
 def test_parse_text():
-    result = _parse_text(SAMPLE)
+    result = _dialogue_as_list(SAMPLE)
     print("NANI")
     print(len(result))
     print(result)

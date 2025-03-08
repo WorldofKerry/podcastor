@@ -9,7 +9,7 @@ H2: <things to say>
 where a newline delimits the contents.
 """
 
-def text_to_podcast(api_key, content):
+def to_podcast(api_key: str, content: str) -> str:
     client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
     api_key=api_key,
