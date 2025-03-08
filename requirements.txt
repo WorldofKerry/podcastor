@@ -1,8 +1,5 @@
 openai
 tika
-gTTS
 pytest
-pyttsx3
 piper-tts
-pytest
 pydub
