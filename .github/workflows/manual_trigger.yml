@@ -5,9 +5,11 @@ name: Run on PDF
 
 on:
   workflow_dispatch:
-    url:
-      description: 'PDF url'
-      required: true
+    inputs:
+      url:
+        description: 'PDF url'
+        required: true
+        default: 'https://arxiv.org/pdf/2205.14135'
 
 permissions:
   contents: read
