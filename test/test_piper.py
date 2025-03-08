@@ -1,7 +1,7 @@
 import os
 import shutil
 from pathlib import Path
-from podcaster_kerry.to_audio import get_audio
+from podcaster_kerry.audio import dialogue_to_mp3
 from . import SAMPLE
 import pytest
 
@@ -15,7 +15,7 @@ def test_create_piper_json():
     output.unlink(missing_ok=True)
     assert not output.exists()
 
-    get_audio(SAMPLE, temp_dir, output)
+    dialogue_to_mp3(SAMPLE, temp_dir, output)
 
     assert temp_dir.exists()
     assert output.exists()

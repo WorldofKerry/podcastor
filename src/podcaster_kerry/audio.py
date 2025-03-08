@@ -32,9 +32,9 @@ class PiperParameters:
             "--sentence-silence", str(self.sentence_silence),
         ]
 
-def _make_entries(content: str) -> list[Entry]:
+def _dialogue_as_entries(content: str) -> list[Entry]:
     ret = []
-    parsed = _parse_text(content)
+    parsed = _dialogue_as_list(content)
     speaker_mapping: dict[str, int] = {}
     id_counter = 0
 
@@ -46,13 +46,13 @@ def _make_entries(content: str) -> list[Entry]:
         ret.append(Entry(speaker_id, content))
     return ret
 
-def get_audio(content: str, working_dir: Path, output: Path):
+def dialogue_to_mp3(content: str, working_dir: Path, output: Path):
     segments_dir = working_dir / SEGMENTS_DIR
 
     working_dir.mkdir(parents=True, exist_ok=True)
     segments_dir.mkdir(parents=True, exist_ok=True)
 
-    results = _make_entries(content)
+    results = _dialogue_as_entries(content)
     model = "en_US-arctic-medium"
     num_speakers = KEY_TO_NUM_SPEAKERS[model]
 
@@ -69,10 +69,10 @@ def get_audio(content: str, working_dir: Path, output: Path):
                 *parameters.as_args(),
                 ]
         _ = subprocess.check_output(command, input=entry.text.encode())
-    _combine_audio(segments_dir, working_dir / WAVE_FILE)
-    _convert_to_mp3(working_dir / WAVE_FILE, output)
+    _combine_wav_files(segments_dir, working_dir / WAVE_FILE)
+    _wav_to_mp3(working_dir / WAVE_FILE, output)
 
-def _combine_audio(segments: Path, output: Path):
+def _combine_wav_files(segments: Path, output: Path):
     infiles = list(segments.glob("*.wav"))
     infiles.sort()
     if not infiles:
@@ -86,10 +86,10 @@ def _combine_audio(segments: Path, output: Path):
         for i in range(len(data)):
             w.writeframes(data[i][1])
 
-def _convert_to_mp3(wave_file: Path, mp3_file: Path):
+def _wav_to_mp3(wave_file: Path, mp3_file: Path):
     AudioSegment.from_wav(str(wave_file)).export(str(mp3_file), format="mp3")
 
-def _parse_text(content: str) -> list[tuple[str, str]]:
+def _dialogue_as_list(content: str) -> list[tuple[str, str]]:
     """
     Inputs:
     content in the format
