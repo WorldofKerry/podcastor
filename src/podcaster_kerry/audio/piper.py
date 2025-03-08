@@ -1,6 +1,7 @@
 
 from dataclasses import dataclass
 from pathlib import Path
+import subprocess
 from podcaster_kerry.audio.helpers import Entry
 
 # American english voices with > 1 speaker. https://github.com/rhasspy/piper/blob/9b1c6397698b1da11ad6cca2b318026b628328ec/src/python_run/piper/voices.json#L4
@@ -22,8 +23,7 @@ class PiperParameters:
             "--sentence-silence", str(self.sentence_silence),
         ]
 
-
-def _dialogue_to_mp3_piper(entries: list[Entry], segments_dir: Path):
+def dialogue_to_mp3_piper(entries: list[Entry], segments_dir: Path):
     model = "en_US-arctic-medium"
     num_speakers = KEY_TO_NUM_SPEAKERS[model]
 
