@@ -7,6 +7,8 @@ Be specific on equations used, new findings, and methodologies, etc. Assume the 
 The result must be formatted as:
 H1: <things to say>
 H2: <things to say>
+H1: <things to say>
+...
 where a newline delimits the contents.
 """
 
