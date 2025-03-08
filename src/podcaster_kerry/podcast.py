@@ -9,20 +9,21 @@ H2: <things to say>
 where a newline delimits the contents.
 """
 
+
 def to_podcast(api_key: str, content: str) -> str:
     client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=api_key,
+        base_url="https://openrouter.ai/api/v1",
+        api_key=api_key,
     )
 
-    completion = client.chat.completions.create(
-    model="deepseek/deepseek-chat:free",
-    messages=[
-        {
-        "role": "user",
-        "content": content + "\n" + PROMPT_TEXT
-        }
-    ],
-    temperature=0.0,
-    )
+    while True:
+        completion = client.chat.completions.create(
+            model="deepseek/deepseek-chat:free",
+            messages=[{"role": "user", "content": content + "\n" + PROMPT_TEXT}],
+            temperature=0.0,
+        )
+        if completion.choices[0].message.content:
+            break
+        print("Empty response, retrying")
+
     return completion.choices[0].message.content, completion
