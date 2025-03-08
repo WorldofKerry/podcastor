@@ -1,11 +1,14 @@
 from openai import OpenAI
 
 PROMPT_TEXT = """
-Convert this into a two-party podcast conversation, without losing nuances.
-Be specific on equations used, new findings and methodologies, etc.
-The result should formatted as:
+Convert this into a two-party podcast conversation.
+Be specific on equations used, new findings, and methodologies, etc. Assume the target audience is highly technical.
+
+The result must be formatted as:
 H1: <things to say>
 H2: <things to say>
+H1: <things to say>
+...
 where a newline delimits the contents.
 """
 
