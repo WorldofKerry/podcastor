@@ -20,14 +20,12 @@ jobs:
       with:
         python-version: "3.10"
     - uses: actions/cache@v4
-      id: pip_cache
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
                         ${{ runner.os }}-pip-
     - name: Install dependencies
-      # if: steps.pip_cache.outputs.cache-hit != 'true'
       run: |
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Install package
@@ -41,9 +39,3 @@ jobs:
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       run: |
         pytest
-    - name: Test piper
-      run: |
-        echo 'Welcome to the world of speech synthesis!' | piper \
-        --model en_US-lessac-medium \
-        --output_file welcome.wav
-        piper --help

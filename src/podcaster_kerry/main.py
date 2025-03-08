@@ -29,7 +29,7 @@ def main():
     parser.add_argument('-k', '--key', help="OPENROUTER_API_KEY", required=True)
     parser.add_argument('-i', '--input', help="path to input pdf file", required=True)
     parser.add_argument('-o', '--output', help="path to output mp3 file", required=True)
-    parser.add_argument('-c', '--working_dir', help="working dir", default="./output/")
+    parser.add_argument('-d', '--working_dir', help="working dir", default="./output/")
     args = parser.parse_args()
     run(Path(args.input), Path(args.output), args.key, Path(args.working_dir))
 

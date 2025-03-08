@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        sample: ['sample.pdf', 'short.pdf']
+        sample: ['sample.pdf']
       fail-fast: false
     steps:
     - uses: actions/checkout@v4

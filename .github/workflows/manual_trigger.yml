@@ -54,7 +54,7 @@ jobs:
       env:
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       run: |
-        python src/podcaster_kerry/main.py -k "$OPENROUTER_API_KEY" -i download.pdf -o podcast.mp3
+        python src/podcaster_kerry/main.py -k "$OPENROUTER_API_KEY" -i download.pdf -o podcast.mp3 -d output/
     
     - name: Upload result
       run: |
@@ -64,4 +64,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.sample }}
-        path: ./output/
+        path: output/
