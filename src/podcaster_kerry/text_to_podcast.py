@@ -2,6 +2,7 @@ from openai import OpenAI
 
 PROMPT_TEXT = """
 Convert this into a two-party podcast conversation, without losing nuances.
+Be specific on equations used, new findings and methodologies, etc.
 The result should formatted as:
 H1: <things to say>
 H2: <things to say>
