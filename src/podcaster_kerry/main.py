@@ -17,7 +17,6 @@ def run(input: Path, output: Path, key: str, working_dir: Path):
     write_to_file(podcast_text, working_dir / "podcast.txt")
     write_to_file(str(response), working_dir / "response.txt")
     dialogue_to_mp3(podcast_text, working_dir, output)
-    upload(output)
 
 def main():
     parser = argparse.ArgumentParser()
