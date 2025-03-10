@@ -40,7 +40,7 @@ jobs:
       env:
         URL: ${{ inputs.url }}
       run: |
-        : "${URL:=https://arxiv.org/abs/2501.12948}"
+        : "${URL:=https://arxiv.org/pdf/2209.01506}"
         wget $URL -O download.pdf
 
     - name: Install package
