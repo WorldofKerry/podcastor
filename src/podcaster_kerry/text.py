@@ -7,5 +7,9 @@ tika_logger = logging.getLogger("tika.tika")
 tika_logger.setLevel(logging.WARNING)
 
 def extract_text(path: os.PathLike) -> str:
-    parsed = parser.from_file(str(path))
+    while True:
+        try:
+            parsed = parser.from_file(str(path))
+        except RuntimeError as e:
+            print(f"Error with extract_text {e}, retrying ...")
     return parsed["content"]
