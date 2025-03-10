@@ -1,6 +1,7 @@
 import argparse
 from pathlib import Path
-from podcaster_kerry import to_podcast, extract_text, dialogue_to_mp3, upload
+import shutil
+from podcaster_kerry import to_podcast, extract_text, dialogue_to_mp3
 
 def write_to_file(text: str, path: Path):
     with open(path, "w") as f:
@@ -11,12 +12,14 @@ def run(input: Path, output: Path, key: str, working_dir: Path):
         print(f"Working dir {working_dir} already exists")
         return
     working_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copy(input, working_dir / "input.pdf")
     raw_text = extract_text(input)
     write_to_file(raw_text, working_dir / "raw.txt")
     podcast_text, response = to_podcast(key, raw_text)
     write_to_file(podcast_text, working_dir / "podcast.txt")
     write_to_file(str(response), working_dir / "response.txt")
     dialogue_to_mp3(podcast_text, working_dir, output)
+    shutil.copy(output, working_dir / "output.mp3")
 
 def main():
     parser = argparse.ArgumentParser()
